@@ -22,28 +22,54 @@ def export_ms_result_images(image_url, faces):
         fa = face["faceAttributes"]
         fa_makeup = face["faceAttributes"]["makeup"]
 
-        content = '有些開心'
+        contenthappy = '還算高興'
         num = fa["smile"]
-        if num > 0.7:
-            content = '開心'
-        elif num < 0.1:
-            content = '不開心'
+        if num > 0.9: contenthappy = '很開心'
+        elif num > 0.5: contenthappy = '開心'
+        elif num > 0.25: contenthappy = '有點開心'
+        elif num < 0.05: contenthappy = '面無表情'
 
-        contenta = fa_makeup["eyeMakeup"]
-        content1 = '沒有化妝'
-        if contenta:
-            content1 = '有化妝'
+        contentbasic = '無法判讀'
+        contenta = fa["gender"]
+        num = fa["age"]
+        if contenta == 'male':
+            if num < 8: contentbasic = '男孩'
+            elif num < 18: contentbasic = '少男'
+            elif num < 32: contentbasic = '男青年'
+            elif num < 46: contentbasic = '青壯男'
+            elif num < 55: contentbasic = '中壯男'
+            elif num < 66: contentbasic = '中年男性'
+            elif num < 75: contentbasic = '初老男性'
+            elif num < 85: contentbasic = '老當益壯'
+            elif num > 84: contentbasic = '長壽男子'
+        if contenta == 'female':
+            if num < 8: contentbasic = '女孩'
+            elif num < 16: contentbasic = '少女'
+            elif num < 16: contentbasic = '碧玉年華'
+            elif num < 32: contentbasic = '花樣年華'
+            elif num < 46: contentbasic = '輕熟女'
+            elif num < 55: contentbasic = '風韻猶存'
+            elif num < 66: contentbasic = '中年女性'
+            elif num < 75: contentbasic = '初老女性'
+            elif num < 85: contentbasic = '邁入老年女性'
+            elif num > 84: contentbasic = '長壽女子'
+
+        contenta = fa_makeup["lipMakeup"]
+        contentb = fa_makeup["eyeMakeup"]
+
+        content1 = '素顏'
+        if contenta == True:
+            if contentb == True: content1 = '粉墨登場'
+            else: content1 = '略施脂粉'
 
         origin = (fr["left"], fr["top"])
         p = patches.Rectangle(
             origin, fr["width"], fr["height"], fill=False, linewidth=2, color='r')
         ax.axes.add_patch(p)
-        plt.text(origin[0], origin[1], "%s, %d, \n"%(fa["gender"].capitalize(), fa["age"]), 
-                fontsize=16, weight="bold", va="bottom", color='b')
-        plt.text(origin[0], origin[1], "%s, %s, %s, %s, \n"%("開心指數", fa["smile"],"(滿分為1)", content), fontproperties=font_prop,
-                fontsize=9, weight="bold", va="bottom", color='red')
-        plt.text(origin[0], origin[1], "%s, %s"%("有沒有化妝?", content1), fontproperties=font_prop,
-                fontsize=8, weight="bold", va="bottom", color='purple')
+        plt.text(origin[0], origin[1], "%s, %s, \n"%(contentbasic, contenthappy), fontproperties=font_prop,
+                 fontsize=10, weight="bold", va="bottom", color='b')
+        plt.text(origin[0], origin[1], "%s "%(content1), fontproperties=font_prop,
+                 fontsize=10, weight="bold", va="bottom", color='red')
     _ = plt.axis("off")
     # plt.show()
     plt.savefig('{}_result{}'.format(os.path.splitext(image_url)[0], os.path.splitext(image_url)[1]))
