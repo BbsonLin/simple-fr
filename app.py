@@ -3,7 +3,6 @@ import logging
 import cognitive_face as MS_CF
 
 from flask import Flask, request, redirect, session, render_template, send_from_directory
-from livereload import Server
 from utils import export_ms_result_images
 
 app = Flask(__name__)
@@ -74,6 +73,7 @@ def analyze():
 
 @app.cli.command('serve', help='Run a live reload server for development.')
 def serve_app():
+    from livereload import Server
     server = Server(app.wsgi_app)
     # server.watch
     server.serve()
