@@ -9,7 +9,8 @@ requests = "*"
 matplotlib = "*"
 pillow = "*"
 cognitive-face = "*"
-python-dotenv = "*"
+gunicorn = "*"
+python-dotenv = "==0.10.3"
 
 [dev-packages]
 "flake8" = "*"
