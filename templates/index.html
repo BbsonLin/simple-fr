@@ -5,17 +5,37 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
   <title>Simple FR</title>
 </head>
 
-<body>
-  <form class="upload autosubmit" method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
-    <label>
-      <h2>Upload</h2>
-      <input type="file" name="file" multiple>
-    </label>
-    <input type="submit">
-  </form>
+<body class="bg-gray-100">
+  <div class="flex flex-col w-full h-screen items-center justify-center">
+    <h1 class="text-4xl font-bold text-center m-4">Let's do a simple face recognization.</h1>
+    <form id="submit-form" class="upload autosubmit" method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data">
+      <label
+        class="w-64 flex flex-col items-center px-4 py-6 bg-white text-blue-700 rounded-lg shadow-lg tracking-wide uppercase border border-blue-700 cursor-pointer hover:bg-blue-600 hover:text-white">
+        <svg class="w-8 h-8" fill="currentColor" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+          <path
+            d="M16.88 9.1A4 4 0 0 1 16 17H5a5 5 0 0 1-1-9.9V7a3 3 0 0 1 4.52-2.59A4.98 4.98 0 0 1 17 8c0 .38-.04.74-.12 1.1zM11 11h3l-4-4-4 4h3v3h2v-3z" />
+        </svg>
+        <span class="mt-2 text-base leading-normal">Upload an image</span>
+        <input id="upload-input" type="file" name="file" class="hidden" />
+      </label>
+      <input type="submit" class="hidden"/>
+    </form>
+  </div>
 </body>
+<script>
+  // IIFE; Prevent other places using our variables
+  (function() {
+    var uploadInput = document.querySelector('#upload-input');
+    console.log(uploadInput)
+    uploadInput.addEventListener("change", function(evt) {
+      console.log(evt)
+      document.querySelector('#submit-form').submit();
+    });
+  })();
+</script>
 
 </html>
