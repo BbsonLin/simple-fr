@@ -12,3 +12,6 @@ cognitive-face = "*"
 python-dotenv = "*"
 
 [dev-packages]
+"flake8" = "*"
+"autopep8" = "*"
+livereload = "*"
